@@ -9,6 +9,8 @@ Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name("index-mah
 Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name("create-mahasiswa");
 Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name("mahasiswa-store");
 Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy'])->name("deleted-mahasiswa");
+Route::get('/mahasiswa/export/excel', [MahasiswaController::class, 'exportExcel'])->name('mahasiswa-export-excel');
+
 
 Route::get('/', function () {
     return view('welcome');
