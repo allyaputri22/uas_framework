@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MahasiswaController;
+
+
+Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name("create-mahasiswa");
+Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name("mahasiswa-store");
 
 Route::get('/', function () {
     return view('welcome');
