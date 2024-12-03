@@ -5,8 +5,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MahasiswaController;
 
 
+Route::get('/mahasiswa', [MahasiswaController::class, 'index'])->name("index-mahasiswa");
 Route::get('/mahasiswa/create', [MahasiswaController::class, 'create'])->name("create-mahasiswa");
 Route::post('/mahasiswa', [MahasiswaController::class, 'store'])->name("mahasiswa-store");
+Route::delete('/mahasiswa/{id}', [MahasiswaController::class, 'destroy'])->name("deleted-mahasiswa");
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,4 +24,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

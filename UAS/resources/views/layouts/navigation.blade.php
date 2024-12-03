@@ -18,11 +18,11 @@
                 </div>
 
                  <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('create-mahasiswa')" :active="request()->routeIs('create-mahasiswa')">
+                    <x-nav-link :href="route('index-mahasiswa')" :active="request()->routeIs('index-mahasiswa')">
                         {{ __('Data Mahasiswa') }}
                     </x-nav-link>
                 </div>
-                
+
             </div>
 
             <!-- Settings Dropdown -->
