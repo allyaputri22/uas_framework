@@ -12,9 +12,26 @@ class MahasiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Mahasiswa::all();
+        // Membuat query builder baru untuk model Product
+        $query = Mahasiswa::query();
+
+
+        // Cek apakah ada parameter 'search' di request
+        if ($request->has('search') && $request->search != '') {
+
+
+            // Melakukan pencarian berdasarkan nama produk atau informasi
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        }
+
+
+        //  $data = Mahasiswa::paginate(5);
+        $data = $query->paginate(5);
         return view("data-mahasiswa.index-mahasiswa", compact('data'));
     }
 
@@ -24,7 +41,6 @@ class MahasiswaController extends Controller
     public function create()
     {
         return view("data-mahasiswa.create-mahasiswa");
-
     }
 
     /**
@@ -34,7 +50,7 @@ class MahasiswaController extends Controller
     {
         //validasi proses penyimpanan data
         $validasi_data = $request->validate([
-            'npm' => 'required|string',
+            'npm' => 'required|string|max:50',
             'name' => 'required|string|max:255',
             'prodi' => 'required|string|max:50',
         ]);
@@ -42,7 +58,7 @@ class MahasiswaController extends Controller
         //Proses simpan data ke dalam database
         Mahasiswa::create($validasi_data);
 
-        return redirect()->back()->with('success', 'Mahasiswa created successfully');
+        return redirect()->route('index-mahasiswa')->with('success', 'Mahasiswa created successfully.');;
     }
 
     /**
@@ -58,7 +74,8 @@ class MahasiswaController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        return view('data-mahasiswa.edit-mahasiswa', compact('mahasiswa'));
     }
 
     /**
@@ -66,7 +83,19 @@ class MahasiswaController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'npm' => 'required|string|max:50',
+            'name' => 'required|string|max:255',
+            'prodi' => 'required|string|max:50',
+        ]);
+
+        $mahasiswa = Mahasiswa::findOrFail($id);
+        $mahasiswa->update([
+            'npm' => $request->npm,
+            'name' => $request->name,
+            'prodi' => $request->prodi,
+        ]);
+        return redirect()->route('index-mahasiswa')->with('success', 'Mahasiswa updated successfully.');;
     }
 
     /**
@@ -82,7 +111,8 @@ class MahasiswaController extends Controller
         return redirect()->back()->with('error', 'Data Mahasiswa tidak ditemukan.');
     }
 
-    public function exportExcel (){
+    public function exportExcel()
+    {
         return Excel::download(new MahasiswaExport, 'data-mahasiswa.xlsx');
     }
 }

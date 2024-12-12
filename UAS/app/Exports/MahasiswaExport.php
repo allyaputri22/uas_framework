@@ -13,7 +13,8 @@ class MahasiswaExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        return Mahasiswa::all();
+        //return Mahasiswa::all();
+        return Mahasiswa::select('id', 'npm', 'name', 'prodi')->get();
     }
 
     public function headings(): array
